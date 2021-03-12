@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<html lang="en">
+
+<head>
   <meta charset="UTF-8">
   <title>Tables Page</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -6,6 +8,7 @@
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
+
 <body>
   <div class="container">
     <div class="jumbotron">
@@ -14,7 +17,8 @@
       <h2 class="text-center">Current Reservations and Waiting List</h2>
       <br>
       <div class="text-center">
-        <a href="/make"><button class="btn btn-lg btn-danger"><span class="fa fa-credit-card"></span> Make Reservation</button></a>
+        <a href="/make"><button class="btn btn-lg btn-danger"><span class="fa fa-credit-card"></span> Make
+            Reservation</button></a>
         <a href="/"><button class="btn btn-lg btn-default"><span class="fa fa-home"></span></button></a>
       </div>
     </div>
@@ -23,6 +27,8 @@
         <div class="card">
           <div class="card-header">
             <h4>Current Reservations</h4>
+            <ul id="listEl">
+            </ul>
           </div>
           <div class="card-body">
             <ul id="tableList" class="list-group"></ul>
@@ -41,9 +47,66 @@
     <footer class="footer mt-4">
       <div class="container">
         <p>Control Panel</p>
-        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API
+        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a
+            href="/api/waitlist">API
             Wait List</a>
-      </p></div>
+        </p>
+      </div>
     </footer>
   </div>
-</body></html>
+
+  <script type="text/javascript">
+
+    function init() {
+      fetch(`/api/tables`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // const {
+          //   name,
+          //   id,
+          //   phone,
+          //   email
+          // } = data;
+          
+          const listEl = document.getElementById('listEl')
+          listEl.setAttribute('style', 'display: inline');
+          console.log(listEl);
+          if (data.length) {
+            data.map( reservation => {
+              const newLi = document.createElement('li');
+              const nameEl = document.createElement('div');
+              nameEl.textContent = reservation.name
+              const idEl = document.createElement('div');
+              idEl.textContent = 'Id: ' + reservation.id
+              const phoneEl = document.createElement('div');
+              phoneEl.textContent = 'Phone#: ' + reservation.phone
+              const emailEl = document.createElement('div');
+              emailEl.textContent = 'Email: ' + reservation.email
+              newLi.appendChild(nameEl);
+              newLi.appendChild(idEl);
+              newLi.appendChild(phoneEl);
+              newLi.appendChild(emailEl);
+              listEl.appendChild(newLi);
+            })
+          } else {
+            nameEl.textContent =
+              'This table is empty';
+            listEl.setAttribute('style', 'display: none');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+    init();
+  </script>
+
+</body>
+
+</html>

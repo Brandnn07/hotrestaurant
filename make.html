@@ -81,7 +81,7 @@
 
 
         submitbtn.addEventListener('click', () => {
-            e.preventDefault();
+            event.preventDefault();
 
             let reservename = document.getElementById('reserve-name').value.trim();
             let reservephone = document.getElementById('reserve-phone').value.trim();
@@ -94,6 +94,7 @@
                 phone: parseInt(reservephone),
                 email: reserveemail
             }
+            console.log(newTable);
             fetch('/api/tables', {
                     method: 'POST',
                     headers: {
@@ -103,7 +104,6 @@
                 })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log('add.html', data);
                     alert(`Adding table: ${data.name}`);
                 })
                 .catch((error) => {
