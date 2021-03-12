@@ -1,0 +1,150 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.997.0" data-gr-ext-installed="">
+
+    <div class="container">
+
+        <div class="jumbotron">
+            <h1 class="text-center">
+                <span class="fa fa-fire"></span> Hot Restaurant</h1>
+            <hr>
+            <h2 class="text-center">Make your reservation</h2>
+            <br>
+            <div class="text-center">
+                <a href="/tables">
+                    <button class="btn btn-lg btn-primary">
+                        <span class="fa fa-list-alt"></span> View Tables</button>
+                </a>
+                <a href="/">
+                    <button class="btn btn-lg btn-default">
+                        <span class="fa fa-home"></span>
+                    </button>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        Table Reservation
+                    </div>
+                    <div class="card-body">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="reserve-name">Name</label>
+                                <input type="text" class="form-control" id="reserve-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="reserve-phone">Phone Number</label>
+                                <input type="text" class="form-control" id="reserve-phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="reserve-email">Email</label>
+                                <input type="text" class="form-control" id="reserve-email">
+                            </div>
+                            <div class="form-group">
+                                <label for="reserve-unique-id">Unique ID</label>
+                                <input type="text" class="form-control" id="reserve-unique-id">
+                            </div>
+                            <button id="submitBtn" type="submit" class="btn btn-primary submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="footer">
+            <div class="container">
+                <p>
+                    <a href="/api/tables">API Table Link</a> |
+                    <a href="/api/waitlist">API Wait List</a>
+                </p>
+            </div>
+        </footer>
+
+    </div>
+    <script type="text/javascript">
+        const submitbtn = document.getElementById('submitBtn');
+
+
+
+
+        submitbtn.addEventListener('click', () => {
+            e.preventDefault();
+
+            let reservename = document.getElementById('reserve-name').value.trim();
+            let reservephone = document.getElementById('reserve-phone').value.trim();
+            let reserveemail = document.getElementById('reserve-email').value.trim();
+            let reserveid = document.getElementById('reserve-unique-id').value.trim();
+
+            let newTable = {
+                name: reservename,
+                id: parseInt(reserveid),
+                phone: parseInt(reservephone),
+                email: reserveemail
+            }
+            fetch('/api/tables', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newTable),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('add.html', data);
+                    alert(`Adding table: ${data.name}`);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>
+<!-- //   let searchedCharacter = document
+  //     .getElementById('character-search')
+  //     .value.trim();
+
+  //   // Using a RegEx Pattern to remove spaces from searchedCharacter
+  //   // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+  //   searchedCharacter = searchedCharacter.replace(/\s+/g, '').toLowerCase();
+
+  //   fetch(`/api/characters/${searchedCharacter}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       const { name, role, age, forcePoints } = data;
+
+  //       if (data) {
+  //         statsEl.setAttribute('style', 'display: inline');
+  //         nameEl.textContent = name;
+  //         roleEl.textContent = role;
+  //         ageEl.textContent = age;
+  //         fpEl.textContent = forcePoints;
+  //       } else {
+  //         nameEl.textContent =
+  //           'The force is not strong with this one. Your character was not found.';
+  //           statsEl.setAttribute('style', 'display: none');
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     }); -->
